@@ -5,10 +5,13 @@ import com.example.StudentMS.entity.Student;
 import com.example.StudentMS.repo.StudentRepo;
 import com.example.StudentMS.util.VarList;
 import jakarta.transaction.Transactional;
+import org.modelmapper.ModelMapper;
+import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.List;
 
 @Service
 @Transactional
@@ -38,9 +41,8 @@ public class StudentService {
         }
     }
     public List<StudentDTO> getAllStudents(){
-        List<Student> employeeList = studentRepo.findAll();
-        return modelMapper.map(employeeList,new TypeToken<ArrayList<StudentDTO>>(){
-        }.getType());
+        List<Student> studentList = studentRepo.findAll();
+        return modelMapper.map(studentList,new TypeToken<ArrayList<StudentDTO>>(){}.getType());
     }
 
     public StudentDTO searchStudent(int stuID){
@@ -51,9 +53,9 @@ public class StudentService {
             return null;
         }
     }
-    public String deleteStudent(int empID){
-        if (studentRepo.existsById(empID)){
-            studentRepo.deleteById(empID);
+    public String deleteStudent(int stuID){
+        if (studentRepo.existsById(stuID)){
+            studentRepo.deleteById(stuID);
             return VarList.RSP_SUCCESS;
         }else {
             return VarList.RSP_NO_DATA_FOUND;
