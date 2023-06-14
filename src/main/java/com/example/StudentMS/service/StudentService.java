@@ -3,9 +3,12 @@ package com.example.StudentMS.service;
 import com.example.StudentMS.dto.StudentDTO;
 import com.example.StudentMS.entity.Student;
 import com.example.StudentMS.repo.StudentRepo;
+import com.example.StudentMS.util.VarList;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
 
 @Service
 @Transactional
@@ -18,16 +21,16 @@ public class StudentService {
 
 
     public String saveStudent(StudentDTO studentDTO){
-        if (employeeRepo.existsById(employeeDTO.getEmpID())){
+        if (studentRepo.existsById(studentDTO.getStuId())){
             return VarList.RSP_DUPLICATED;
         }else {
-            employeeRepo.save(modelMapper.map(employeeDTO, Student.class));
+            studentRepo.save(modelMapper.map(studentDTO, Student.class));
             return VarList.RSP_SUCCESS;
         }
     }
     public String updateStudent(StudentDTO studentDTO){
-        if (studentRepo.existsById(employeeDTO.getstuId())){
-            studentRepo.save(modelMapper.map(employeeDTO, Student.class));
+        if (studentRepo.existsById(studentDTO.getStuId())){
+            studentRepo.save(modelMapper.map(studentDTO, Student.class));
             return VarList.RSP_SUCCESS;
 
         }else {
@@ -36,14 +39,14 @@ public class StudentService {
     }
     public List<StudentDTO> getAllStudents(){
         List<Student> employeeList = studentRepo.findAll();
-        return modelMapper.map(employeeList,new TypeToken<ArrayList<EmployeeDTO>>(){
+        return modelMapper.map(employeeList,new TypeToken<ArrayList<StudentDTO>>(){
         }.getType());
     }
 
-    public StudentDTO searchStudent(int empID){
-        if (studentRepo.existsById(empID)){
-            Student employee =studentRepo.findById(empID).orElse(null);
-            return modelMapper.map(employee,StudentDTO.class);
+    public StudentDTO searchStudent(int stuID){
+        if (studentRepo.existsById(stuID)){
+            Student student =studentRepo.findById(stuID).orElse(null);
+            return modelMapper.map(student,StudentDTO.class);
         }else {
             return null;
         }
